@@ -7,6 +7,7 @@
 
 "use strict";
 
+var nlf = require("nlf");
 var FindIt = require("findit");
 var FS = require("fs");
 var Rimraf = require("rimraf");
@@ -33,6 +34,7 @@ var source = args.source;
 var mode = args.mode.toLowerCase();
 var target = Path.resolve(args.target);
 var licenses = [];
+var deps = [];
 
 if (mode!=="merge" && mode!=="collect" && mode!=="output") mode = "output";
 
@@ -159,7 +161,12 @@ var find = function() {
 
 		if (!match) return;
 
-		licenses.push(file);
+		// Only add dev dependencies
+		if(deps.some(function(dep) {
+			return dep.licenseSources.license.sources.length > 0 && dep.licenseSources.license.sources[0].filePath === resfile
+		})) {
+			licenses.push(file);
+		}
 	});
 
 	findit.on("directory",function(dir,stat,stop){
@@ -172,6 +179,20 @@ var find = function() {
 	});
 };
 
-prepare();
-find();
+nlf.find({
+	directory: source,
+	production: true
+}, function (err, data) {
+	if (err) {
+		console.log(err);
+		return
+	}
+
+	deps = data;
+	console.log('Dev Deps: ' + deps.length)
+	prepare();
+	find();
+});
+
+
 
