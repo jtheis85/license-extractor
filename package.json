@@ -1,6 +1,6 @@
 {
   "name": "license-extractor-production-only",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Fork of https://github.com/arei/license-extractor, uses nlf to limit extraction to only production dependencies.",
   "homepage": "https://github.com/lwd-technology/license-extractor",
 
