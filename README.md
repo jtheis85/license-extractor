@@ -1,3 +1,7 @@
+# license-extractor-production-only
+
+Note! This is a fork of https://github.com/arei/license-extractor which uses nlf to limit the extraction to just production dependencies. 
+
 # license-extractor
 
 ## Purpose
